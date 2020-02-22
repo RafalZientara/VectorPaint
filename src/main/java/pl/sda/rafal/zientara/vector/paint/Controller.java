@@ -12,10 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pl.sda.rafal.zientara.vector.paint.io.SDAFileReader;
-import pl.sda.rafal.zientara.vector.paint.shapes.Line;
-import pl.sda.rafal.zientara.vector.paint.shapes.Rectangle;
-import pl.sda.rafal.zientara.vector.paint.shapes.Shape;
-import pl.sda.rafal.zientara.vector.paint.shapes.Triangle;
+import pl.sda.rafal.zientara.vector.paint.shapes.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +82,7 @@ public class Controller {
                 endY = event.getY();
                 System.out.printf("Dragged x=%f y=%f\n", endX, endY);
                 prepareShape();
-//                applyShape();
+                applyShape();
                 refreshCanvas();
             }
         });
@@ -130,8 +127,14 @@ public class Controller {
                 return new Line(startX, startY, endX, endY);
             case RECTANGLE:
                 return new Rectangle(startX, startY, endX, endY);
+            case ELLIPSE:
+                return new Ellipse(startX, startY, endX, endY);
             case TRIANGLE:
                 return new Triangle(startX, startY, endX, endY);
+            case CIRCLE:
+                return new Circle(startX, startY, endX, endY);
+            case STAR:
+                return new Star(startX, startY, endX, endY);
         }
     }
 
