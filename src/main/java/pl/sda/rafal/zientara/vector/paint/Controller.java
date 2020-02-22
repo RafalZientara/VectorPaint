@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import pl.sda.rafal.zientara.vector.paint.io.SDAFileReader;
 import pl.sda.rafal.zientara.vector.paint.shapes.Line;
 import pl.sda.rafal.zientara.vector.paint.shapes.Rectangle;
 import pl.sda.rafal.zientara.vector.paint.shapes.Shape;
@@ -22,6 +23,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -83,7 +85,7 @@ public class Controller {
                 endY = event.getY();
                 System.out.printf("Dragged x=%f y=%f\n", endX, endY);
                 prepareShape();
-                applyShape();
+//                applyShape();
                 refreshCanvas();
             }
         });
@@ -167,6 +169,8 @@ public class Controller {
             if (file != null) {
                 saveTextToFile(reduce.get(), file);
             }
+        } else {
+            //todo nie ma co zapisywac!
         }
     }
 
@@ -178,6 +182,28 @@ public class Controller {
             writer.close();
         } catch (IOException ex) {
             ex.printStackTrace();
+        } finally {
+
+        }
+    }
+
+    @FXML
+    public void handleLoad() {
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("YOLO files (*.yolo)", "*.yolo");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showOpenDialog(new Stage());
+
+        if (file != null) {
+            ShapeFactory factory = new ShapeFactory();
+            SDAFileReader reader = new SDAFileReader(file);
+            shapeList = reader.readFile().stream()
+                    .map(string -> factory.get(string))
+                    .filter(shape -> shape != null)
+                    .collect(Collectors.toList());
+            refreshCanvas();
         }
     }
 
