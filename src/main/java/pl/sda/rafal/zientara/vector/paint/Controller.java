@@ -82,7 +82,7 @@ public class Controller {
                 endY = event.getY();
                 System.out.printf("Dragged x=%f y=%f\n", endX, endY);
                 prepareShape();
-                applyShape();
+//                applyShape();
                 refreshCanvas();
             }
         });

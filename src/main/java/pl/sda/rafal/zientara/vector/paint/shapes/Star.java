@@ -1,12 +1,18 @@
 package pl.sda.rafal.zientara.vector.paint.shapes;
 
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Star extends Shape {
     private double xc;
     private double yc;
     private double radius;
+
+    private List<Point2D> path;
 
     public Star(double x1, double y1, double x2, double y2) {
         xc = (x1 + x2) / 2;
@@ -15,6 +21,22 @@ public class Star extends Shape {
         double height = Math.abs(y1 - y2);
         double d = Math.min(width, height);
         radius = d / 2;
+        preparePath();
+    }
+
+    private void preparePath() {
+        path = new ArrayList<>();
+        int count = 100;
+        for (int i = 0; i < count; i++) {
+            double a = (double) i / count * 2 * Math.PI;
+            double r = i % 2 == 0 ? radius : radius / 2;
+            double xDelta = Math.sin(a) * r;
+            double yDelta = Math.cos(a) * r;
+            double x = xc + xDelta;
+            double y = yc - yDelta;
+
+            path.add(new Point2D(x, y));
+        }
     }
 
     private Star(Builder builder) {
@@ -27,19 +49,13 @@ public class Star extends Shape {
 
     public void draw(GraphicsContext context) {
         context.beginPath();
-        int count = 10;
 
-        context.moveTo(xc, yc - radius);
 
-        for (int i = 0; i < count; i++) {
-            double a = (double) i / count * 2 * Math.PI;
-            double r = i % 2 == 0 ? radius : radius / 2;
-            double xDelta = Math.sin(a) * r;
-            double yDelta = Math.cos(a) * r;
-            double x = xc + xDelta;
-            double y = yc - yDelta;
+        Point2D firstPoint = path.get(0);
+        context.moveTo(firstPoint.getX(), firstPoint.getY());
 
-            context.lineTo(x, y);
+        for (Point2D point : path) {
+            context.lineTo(point.getX(), point.getY());
         }
 
         context.closePath();
