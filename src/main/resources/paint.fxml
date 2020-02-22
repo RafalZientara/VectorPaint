@@ -45,6 +45,7 @@
                         <Button mnemonicParsing="false" text="CLEAR"/>
                         <Button mnemonicParsing="false" onAction="#handleLoad" text="LOAD"/>
                         <Button mnemonicParsing="false" onAction="#handleSave" text="SAVE"/>
+                        <Button mnemonicParsing="false" onAction="#saveToImage" text="SAVE IMG"/>
                     </children>
                 </HBox>
             </top>
